@@ -1,0 +1,28 @@
+---
+
+- name: systemユーザ作成(Ubuntu)
+  user: name={{ item }} shell=/bin/bash groups=sudo,adm password={{ admin_password }} append=yes update_password=on_create
+  with_items:
+    - yamasita
+  when: ansible_distribution == "Ubuntu"
+
+- name: systemユーザ作成(RedHat)
+  user: name={{ item }} shell=/bin/bash groups=wheel,adm password={{ admin_password }} append=yes update_password=on_create
+  with_items:
+    - yamasita
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
+
+- name: /etc/sudoersの編集(RedHat)
+  lineinfile: dest=/etc/sudoers regexp="^# %wheel.*" line="%wheel        ALL=(ALL)       ALL"
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
+
+- name: .sshディレクトリ作成
+  file: path=/home/{{ item }}/.ssh owner={{ item }} group={{ item }} mode=0755 state=directory
+  with_items:
+    - yamasita
+
+- name: 公開鍵配置
+  copy: src={{ item }}.key dest=/home/{{ item }}/.ssh/authorized_keys owner={{ item }} group={{ item }} mode=0644
+  with_items:
+    - yamasita
+

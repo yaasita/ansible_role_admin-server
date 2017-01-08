@@ -1,0 +1,4 @@
+---
+
+# mkpasswd --method=SHA-512
+admin_password: $6$9Oyl5AJOm$NzZUHOuySyZuKh3roYUhknBA4mcdQxmR7/uYt/kA0uIwWs1mtW.LhFi6TrGoKpLZ78EXWGpqRH.XIcO/BROA50
